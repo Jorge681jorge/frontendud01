@@ -1,0 +1,36 @@
+<nav>
+        <button v-if="is_auth" v-on:click="loadHome"> Inicio </button>
+        <button v-if="is_auth" v-on:click="loadAccount"> Cuenta </button>
+        <button v-if="is_auth" v-on:click="loadTransaction"> Transacción </button>
+        <button v-if="is_auth" v-on:click="logOut"> Cerrar Sesión </button>
+        <button v-if="!is_auth" v-on:click="loadLogIn" > Iniciar Sesión </button>
+        <button v-if="!is_auth" v-on:click="loadSignUp" > Registrarse </button>
+      </nav>
+
+
+
+
+      methods: {
+        processStudentCreate: async function(){
+            await this.$apollo
+                .mutate({
+                mutation: gql`
+                    mutation ($studentData: StudentData) {
+                        createStudents(studentData: $studentData) {
+                            name
+                            id
+                        }
+                    }
+                `,
+                variables: {
+                    studentData: this.student,
+                },
+                })
+                .then((result) => {
+                alert("Transacción Realizada de Manera Correcta, Revise Historial");
+                })
+                .catch((error) => {
+                alert("error");
+                });
+        },
+    },
